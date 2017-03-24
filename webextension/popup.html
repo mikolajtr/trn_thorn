@@ -24,7 +24,7 @@
                     </div>
 
                     <div id="tab1" class="col s12 noMargin noPadding noBorder">
-                        <ul class="collection auctions" id="auctions-list">
+                        <ul class="collection auctions">
                             <li class="collection-item avatar" v-for="auction in auctions">
                                 <img v-bind:src="auction.img" v-bind:alt="auction.title" class="circle">
                                 <span class="title">{{ auction.title }}</span>
@@ -50,7 +50,7 @@
                         <label for="password">Hasło</label>
                     </div>
                     <div class="input-field col s12">
-                        <button class="btn waves-effect waves-light" type="button" v-on:click="submit()">
+                        <button class="btn waves-effect waves-light" type="button" v-on:click="submitForm()" v-bind:disabled="form.sent == 1 ? true : false">
                             Zaloguj się
                         </button>
                     </div>
@@ -58,6 +58,7 @@
             </section>
         </main>
 
+        <script src="js/jquery-3.2.0.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/vue.js"></script>
         <script src="js/axios.js"></script>
