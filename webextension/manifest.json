@@ -1,0 +1,39 @@
+{
+    "manifest_version": 2,
+    "name": "BrainCode2017",
+    "author": "Thorn",
+    "description": "Wtyczka stworzona na BrainCode2017 przez zespół Thorn",
+    "version": "1.0",
+    "browser_action": {
+        "default_icon": "img/icon-48.png",
+        "default_popup": "popup.html",
+        "default_title": "Wyświetl menu"
+    },
+    "options_page": "options.html",
+    "description": "My Chrome Extension with Materialize CSS",
+    "icons": {
+        "16": "img/icon-16.png",
+        "48": "img/icon-48.png",
+        "128": "img/icon-128.png"
+    },
+    "permissions": [ 
+        "activeTab", 
+        "storage"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "externally_connectable": {
+        "matches": [
+            
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.allegro.pl/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}

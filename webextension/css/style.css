@@ -1,0 +1,54 @@
+html {
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 20px;
+}
+
+.noMargin {
+    margin: 0 !important;
+}
+
+.noPadding {
+    padding: 0 !important;
+}
+
+.noBorder {
+    border: 0 !important;
+}
+
+.auctions {
+    text-transform: uppercase;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.collection .collection-item.avatar {
+    padding: 10px;
+    min-height: 0;
+}
+
+.collection .collection-item.avatar .circle,
+.auctions img
+{
+    vertical-align: middle;
+    margin-right: 8px;
+    width: 48px;
+    height: 48px;
+    position: static;
+}
+
+nav {
+    height: 52px;
+    line-height: 52px;
+}
+
+nav .brand-logo {
+    font-size: 1.6rem;
+}
+
+.tabs .indicator {
+    background-color: #2196f3;
+}
+
