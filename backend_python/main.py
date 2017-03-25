@@ -39,7 +39,7 @@ def bids_active():
 
 
 @app.route("/watched/active", methods=['POST'])
-def bids_active():
+def watched_active():
     data = json.loads(request.data)
     access_token = data["access_token"]
     return str(get_watched_active(access_token))
