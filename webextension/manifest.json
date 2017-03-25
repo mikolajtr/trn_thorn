@@ -9,8 +9,6 @@
         "default_popup": "popup.html",
         "default_title": "Wyświetl menu"
     },
-    "options_page": "options.html",
-    "description": "My Chrome Extension with Materialize CSS",
     "icons": {
         "16": "img/icon-16.png",
         "48": "img/icon-48.png",
@@ -18,10 +16,15 @@
     },
     "permissions": [ 
         "activeTab", 
+        "tabs",
         "storage",
-        "https://allegroreminderapi20170325014922.azurewebsites.net/",
-        "https://api.natelefon.pl/",
-        "https://allegroapi.io/"
+        "alarms",
+        "notifications",
+        "https://allegroreminderapi20170325014922.azurewebsites.net/*",
+        "https://api.natelefon.pl/*",
+        "https://allegroapi.io/*",
+        "http://127.0.0.1/*",
+        "https://*.allegroimg.com/*"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "externally_connectable": {
@@ -29,6 +32,7 @@
 
         ]
     },
+    "options_page": "options.html",
     "background": {
         "page": "background.html"
     },
@@ -39,14 +43,6 @@
             ],
             "js": [
                 "js/content.js"
-            ]
-        },
-        {
-            "matches": [
-                "http://allegroreminderapi20170325014922.azurewebsites.net/auth/code/*"
-            ],
-            "js": [
-                "js/token.js"
             ]
         }
     ]

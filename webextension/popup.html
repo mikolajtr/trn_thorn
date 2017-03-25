@@ -5,8 +5,9 @@
         <title>braincode2017</title>
         <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/style.css">
+
     </head>
-    <body style="width:360px;">
+    <body style="width:380px;">
         <nav class="blue darken-3">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo center">braincode2017</a>
@@ -18,34 +19,39 @@
                 <div class="row noMargin noPadding">
                     <div class="col s12 noMargin noPadding">
                         <ul class="tabs tabs-fixed-width">
-                            <li class="tab col s6"><a class="active blue-text" href="#tab1">Licytowane aukcje</a></li>
-                            <li class="tab col s6"><a class="blue-text" href="#tab2">Obserwowane aukcje</a></li>
+                            <li class="tab col s6"><a class="active blue-text" href="#tab_obs">Obserwowane aukcje</a></li>
+                            <li class="tab col s6"><a class="blue-text" href="#tab_lic">Licytowane aukcje</a></li>
+
                         </ul>
                     </div>
 
-                    <div id="tab1" class="col s12 noMargin noPadding noBorder">
+                    <div id="tab_obs" class="col s12 noMargin noPadding noBorder">
                         <ul class="collection auctions">
-                            <li class="collection-item avatar" v-for="auction in auctions" v-if="auction.bidded">
-                                <img v-bind:src="auction.img" v-bind:alt="auction.title" class="circle">
+                            <li class="collection-item avatar" v-for="auction in auctions" :key="auction.id" v-if="auction.watched">
+                                <img v-bind:src="auction.img" v-bind:alt="auction.title">
                                 <div class="auction-details">
                                     <table>
-                                        <tr><th colspan="2">{{ auction.title }}</th></tr>
-                                        <tr><td>Aktualna kwota:</td><td>{{ auction.price }}</td></tr>
-                                        <tr><td>Czas do zakończenia:</td><td>{{ auction.end }}</td></tr>
+                                        <tr><th colspan="2">{{ auction.title }} <a target="_blank" v-bind:href="auction.url">LINK</a></th></tr>
+                                        <tr><td>Kwota licytacji:</td><td>{{ auction.price }}</td></tr>
+                                        <tr><td>Kup teraz:</td><td>{{ auction.buyNow }}</td></tr>
+                                        <tr><td>Data zakończenia:</td><td>{{ auction.date }}</td></tr>
+                                        <tr><td>Czas do końca:</td><td>{{ auction.diff }} sekund<td></tr>
                                     </table>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <div id="tab2" class="col s12">
+                    <div id="tab_lic" class="col s12 noMargin noPadding noBorder">
                         <ul class="collection auctions">
-                            <li class="collection-item avatar" v-for="auction in auctions" v-if="auction.watched">
-                                <img v-bind:src="auction.img" v-bind:alt="auction.title" class="circle">
+                            <li class="collection-item avatar" v-for="auction in auctions" :key="auction.id" v-if="auction.bidded">
+                                <img v-bind:src="auction.img" v-bind:alt="auction.title">
                                 <div class="auction-details">
                                     <table>
-                                        <tr><th colspan="2">{{ auction.title }}</th></tr>
-                                        <tr><td>Aktualna kwota:</td><td>{{ auction.price }}</td></tr>
-                                        <tr><td>Czas do zakończenia:</td><td>{{ auction.end }}</td></tr>
+                                        <tr><th colspan="2">{{ auction.title }} <a target="_blank" v-bind:href="auction.url">LINK</a></th></tr>
+                                        <tr><td>Kwota licytacji:</td><td>{{ auction.price }}</td></tr>
+                                        <tr><td>Kup teraz:</td><td>{{ auction.buyNow }}</td></tr>
+                                        <tr><td>Data zakończenia:</td><td>{{ auction.date }}</td></tr>
+                                        <tr><td>Czas do końca:</td><td>{{ auction.diff }} sekund<td></tr>
                                     </table>
                                 </div>
                             </li>
@@ -66,7 +72,7 @@
                         <label for="login">Login</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" v-model="password" v-bind:disabled="form.sent == 1 ? true : false">
+                        <input id="password" type="password" class="validate" v-model="credentials.password" v-bind:disabled="form.sent == 1 ? true : false">
                         <label for="password">Hasło</label>
                     </div>
                     <div class="input-field col s12">
@@ -78,11 +84,11 @@
             </section>
         </main>
 
-        <script src="vendor/jquery-3.2.0.js"></script>
-        <script src="vendor/moment.js"></script>
-        <script src="vendor/materialize.js"></script>
-        <script src="vendor/vue.js"></script>
-        <script src="vendor/sha256.js"></script>
+        <script src="vendor/jquery-2.2.4.min.js"></script>
+        <script src="vendor/materialize.min.js"></script>
+        <script src="vendor/vue.min.js"></script>
+        <script src="vendor/moment.min.js"></script>
+        <script src="vendor/lodash.core.js"></script>
         <script src="js/popup.js"></script>
     </body>
 </html>
