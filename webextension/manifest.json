@@ -23,7 +23,7 @@
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "externally_connectable": {
         "matches": [
-            
+
         ]
     },
     "content_scripts": [
@@ -33,6 +33,14 @@
             ],
             "js": [
                 "content.js"
+            ]
+        },
+        {
+            "matches": [
+                "http://allegroreminderapi20170325014922.azurewebsites.net/auth/code/*"
+            ],
+            "js": [
+                "token.js"
             ]
         }
     ]

@@ -5,7 +5,6 @@
         <title>braincode2017</title>
         <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/popup.css">
     </head>
     <body style="width:360px;">
         <nav class="blue darken-3">
@@ -19,7 +18,7 @@
                     <div class="col s12 noMargin noPadding">
                         <ul class="tabs tabs-fixed-width">
                             <li class="tab col s6"><a class="active blue-text" href="#tab1">Obserwowane aukcje</a></li>
-                            <li class="tab col s6"><a class="blue-text" href="#tab2">???</a></li>
+                            <li class="tab col s6"><a class="blue-text" href="#tab2">Podejrzyj token</a></li>
                         </ul>
                     </div>
 
@@ -27,32 +26,36 @@
                         <ul class="collection auctions">
                             <li class="collection-item avatar" v-for="auction in auctions">
                                 <img v-bind:src="auction.img" v-bind:alt="auction.title" class="circle">
-                                <span class="title">{{ auction.title }}</span>
+                                <div class="auction-details">
+                                    <table>
+                                        <tr><th colspan="2">{{ auction.title }}</th></tr>
+                                        <tr><td>Aktualna kwota:</td><td>{{ auction.price }}</td></tr>
+                                        <tr><td>Data zakończenia:</td><td>{{ auction.date }}</td></tr>
+                                        <tr>
+                                            <td>Limit kwoty:</td>
+                                            <td> 
+                                                <input placeholder="Limit kwoty" title="Limit kwoty" name="limit" type="number" class="validate auction-input" v-model="auction.limit">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div id="tab2" class="col s12">
-                        na razie pusto
+                        {{ token }}
                     </div>
                 </div>
             </section>
             <section v-else>
                 <form class="row">
                     <div class="col s12">
-                        <h1>Zaloguj się swoimi danymi Allegro!</h1>
+                        <h1>Przejdź do Allegro by autoryzować wtyczkę</h1>
                     </div>
                     <div class="input-field col s12">
-                        <input id="login" type="text" class="validate" v-model="credentials.login" v-bind:disabled="form.sent == 1 ? true : false">
-                        <label for="login">Login</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" v-model="credentials.password" v-bind:disabled="form.sent == 1 ? true : false">
-                        <label for="password">Hasło</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <button class="btn waves-effect waves-light" type="button" v-on:click="submitForm()" v-bind:disabled="form.sent == 1 ? true : false">
-                            Zaloguj się
-                        </button>
+                        <a class="btn waves-effect waves-light" target="_blank" v-bind:href="url">
+                            Autoryzuj wtyczkę
+                        </a>
                     </div>
                 </form>
             </section>
