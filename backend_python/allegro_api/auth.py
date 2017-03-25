@@ -5,7 +5,8 @@ import json
 import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
-from credentials import client_id, client_secret, token_url
+
+from allegro_api.credentials import token_url, client_id, client_secret
 
 
 def get_sha256(text):
@@ -30,8 +31,11 @@ def login_user(username, password, token):
             "hashPass": get_base64(get_sha256(password)),
             "access_token": token}
     req = requests.post("https://api.natelefon.pl/v1/allegro/login", data=data)
+
+    if req.status_code != 200:
+        return str(json.loads(req.content)["userMessage"]), req.status_code
     userId = json.loads(req.content)["userId"]
-    return {"access_token": token, "user_id": userId}
+    return str({"access_token": token, "user_id": userId}), req.status_code
 
 
 def authenticate(username, password):
