@@ -35,7 +35,7 @@ def login_user(username, password, token):
     if req.status_code != 200:
         return str(json.loads(req.content)["userMessage"]), req.status_code
     userId = json.loads(req.content)["userId"]
-    return str({"access_token": token, "user_id": userId}), req.status_code
+    return json.dumps({"access_token": token, "user_id": userId}), req.status_code
 
 
 def authenticate(username, password):
