@@ -20,7 +20,7 @@ namespace AllegroReminder.Client
         public BidsSet GetBought(string accessToken)
         {
             var request = new RestRequest("v1/allegro/my/bids/bought", Method.GET);
-            request.AddHeader("authorization", $"Bearer {accessToken}");
+            request.AddParameter("access_token", accessToken);
 
             IRestResponse<BidsSet> response = apiClient.Execute<BidsSet>(request);
 
@@ -29,8 +29,8 @@ namespace AllegroReminder.Client
 
         public BidsSet GetWatched(string accessToken)
         {
-            var request = new RestRequest("v1/allegro/my/watched/active", Method.GET);
-            request.AddHeader("authorization", $"Bearer {accessToken}");
+            var request = new RestRequest("v1/allegro/my/watched/active?access_token" + accessToken, Method.GET);
+          //  request.AddParameter("access_token", accessToken);
 
             IRestResponse<BidsSet> response = apiClient.Execute<BidsSet>(request);
 
