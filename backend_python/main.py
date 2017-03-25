@@ -30,7 +30,7 @@ def bids_bought():
     return str(get_bids_bought(access_token))
 
 
-@app.route("/bids/active", method=['POST'])
+@app.route("/bids/active", methods=['POST'])
 def bids_active():
     data = json.loads(request.data)
     access_token = data["access_token"]
