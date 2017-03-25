@@ -18,7 +18,10 @@
     },
     "permissions": [ 
         "activeTab", 
-        "storage"
+        "storage",
+        "https://allegroreminderapi20170325014922.azurewebsites.net/",
+        "https://api.natelefon.pl/",
+        "https://allegroapi.io/"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "externally_connectable": {
@@ -26,13 +29,16 @@
 
         ]
     },
+    "background": {
+        "page": "background.html"
+    },
     "content_scripts": [
         {
             "matches": [
                 "*://*.allegro.pl/*"
             ],
             "js": [
-                "content.js"
+                "js/content.js"
             ]
         },
         {
@@ -40,7 +46,7 @@
                 "http://allegroreminderapi20170325014922.azurewebsites.net/auth/code/*"
             ],
             "js": [
-                "token.js"
+                "js/token.js"
             ]
         }
     ]
