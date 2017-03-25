@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="AccessToken.cs" />
     <Compile Include="AuthenticationResult.cs" />
+    <Compile Include="Bid.cs" />
+    <Compile Include="BidsSet.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

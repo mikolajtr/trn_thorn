@@ -11,11 +11,11 @@ namespace AllegroReminder.Api.Controllers
     [RoutePrefix("Auth")]
     public class AuthController : ApiController
     {
-        private AllegroApiClient apiClient;
+        private AuthClient apiClient;
 
         public AuthController()
         {
-            apiClient = new AllegroApiClient(SettingsHelpers.GetApiClientArgs());
+            apiClient = new AuthClient(SettingsHelpers.GetApiClientArgs());
         }
 
         [Route("Login")]

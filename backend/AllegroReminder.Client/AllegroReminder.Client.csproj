@@ -61,7 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllegroApiClient.cs" />
+    <Compile Include="AuthClient.cs" />
+    <Compile Include="ApiClient.cs" />
     <Compile Include="ApiClientArgs.cs" />
     <Compile Include="EncodingHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

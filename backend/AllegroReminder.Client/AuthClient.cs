@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace AllegroReminder.Client
 {
-    public class AllegroApiClient
+    public class AuthClient
     {
         private string tokenUrl;
         private string apiUrl;
@@ -18,7 +18,7 @@ namespace AllegroReminder.Client
 
         public string AccessToken { get; private set; }
 
-        public AllegroApiClient(ApiClientArgs args)
+        public AuthClient(ApiClientArgs args)
         {
             tokenUrl = args.TokenUrl;
             clientId = args.ClientId;
