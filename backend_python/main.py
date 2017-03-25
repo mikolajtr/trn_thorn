@@ -4,6 +4,7 @@ from flask import request
 
 from allegro_api.auth import authenticate
 import allegro_api.bargains as bargains
+from allegro_api.offers import buy_item_from_offers
 from allegro_api.sales import get_bids_bought, get_bids_active
 from allegro_api.watched import get_watched_active
 
@@ -43,6 +44,12 @@ def watched_active():
     data = json.loads(request.data)
     access_token = data["access_token"]
     return json.dumps(get_watched_active(access_token))
+
+
+@app.route("/offers/<offer_id>/buy", methods=['POST'])
+def buy_item(offer_id):
+    data = json.loads(request.data)
+    return json.dumps(buy_item_from_offers(offer_id, **data))
 
 
 if __name__ == "__main__":
