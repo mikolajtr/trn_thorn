@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroReminder.Api", "AllegroReminder.Api\AllegroReminder.Api.csproj", "{1257F909-7446-43EA-816F-567B1700AD76}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroReminder.Model", "AllegroReminder.Model\AllegroReminder.Model.csproj", "{5D68E3A5-026A-4841-AB39-EE79CE8EDC0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroReminder.Api", "AllegroReminder.Api\AllegroReminder.Api.csproj", "{9691F8B5-BF50-4850-A0A1-1EB7932C7F2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroReminder.Client", "AllegroReminder.Client\AllegroReminder.Client.csproj", "{71B3FF0A-01BB-433C-9EEB-E16A1C47FABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllegroReminder.Tests", "AllegroReminder.Tests\AllegroReminder.Tests.csproj", "{F2975822-9466-404D-BB74-1B73EBDC0747}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1257F909-7446-43EA-816F-567B1700AD76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1257F909-7446-43EA-816F-567B1700AD76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1257F909-7446-43EA-816F-567B1700AD76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1257F909-7446-43EA-816F-567B1700AD76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D68E3A5-026A-4841-AB39-EE79CE8EDC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D68E3A5-026A-4841-AB39-EE79CE8EDC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D68E3A5-026A-4841-AB39-EE79CE8EDC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D68E3A5-026A-4841-AB39-EE79CE8EDC0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9691F8B5-BF50-4850-A0A1-1EB7932C7F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9691F8B5-BF50-4850-A0A1-1EB7932C7F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9691F8B5-BF50-4850-A0A1-1EB7932C7F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9691F8B5-BF50-4850-A0A1-1EB7932C7F2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71B3FF0A-01BB-433C-9EEB-E16A1C47FABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71B3FF0A-01BB-433C-9EEB-E16A1C47FABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71B3FF0A-01BB-433C-9EEB-E16A1C47FABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71B3FF0A-01BB-433C-9EEB-E16A1C47FABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2975822-9466-404D-BB74-1B73EBDC0747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2975822-9466-404D-BB74-1B73EBDC0747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2975822-9466-404D-BB74-1B73EBDC0747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2975822-9466-404D-BB74-1B73EBDC0747}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
