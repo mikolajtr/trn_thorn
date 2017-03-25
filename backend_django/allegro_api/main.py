@@ -1,6 +1,6 @@
 import time
 
-from auth import authenticate
+from authorization import authenticate
 from bargains import get_bargains
 from credentials import sample_username, sample_password
 from watched import get_watched_active
