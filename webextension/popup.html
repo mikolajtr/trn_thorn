@@ -10,9 +10,9 @@
         <main id="main">
             <nav class="blue darken-3">
                 <div class="nav-wrapper">
-                    <a href="#" v-on:click="switchPage('list')" class="left">&#x2261;</a>
+                    <a href="#" v-on:click="switchPage('list')" class="left" v-if="authenticated">&#x2261;</a>
                     <a href="#" v-on:click="switchPage('list')" class="brand-logo center">braincode2017</a>
-                    <a href="#" v-on:click="switchPage('options')" class="right">&#9881;</a>
+                    <a href="#" v-on:click="switchPage('options')" class="right" v-if="authenticated">&#9881;</a>
                 </div>
             </nav>
             <section v-if="authenticated">
