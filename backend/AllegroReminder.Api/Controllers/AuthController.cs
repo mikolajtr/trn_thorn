@@ -20,27 +20,6 @@ namespace AllegroReminder.Api.Controllers
             apiClient = new AllegroApiClient(SettingsHelpers.GetApiClientArgs());
         }
 
-        [Route("Code")]
-        [HttpGet]
-        public HttpResponseMessage AuthorizeWithCode(string code)
-        {
-            string userToken;
-            var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
-
-            try
-            {
-                userToken = apiClient.AuthenticateUserWithCode(code);
-                response.Content = new StringContent(userToken);
-            }
-            catch (Exception)
-            {
-                response.Content = new StringContent("Error");
-            }
-
-            return response;
-        }
-
         [Route("Login")]
         [HttpPost]
         public HttpResponseMessage Login(LoginInformations loginInformations)
