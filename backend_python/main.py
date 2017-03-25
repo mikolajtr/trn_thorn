@@ -21,28 +21,28 @@ def authorize():
 def bargains():
     data = json.loads(request.data)
     access_token = data["access_token"]
-    return str(bargains.get_bargains(access_token))
+    return json.dumps(bargains.get_bargains(access_token))
 
 
 @app.route("/bids/bought", methods=['POST'])
 def bids_bought():
     data = json.loads(request.data)
     access_token = data["access_token"]
-    return str(get_bids_bought(access_token))
+    return json.dumps(get_bids_bought(access_token))
 
 
 @app.route("/bids/active", methods=['POST'])
 def bids_active():
     data = json.loads(request.data)
     access_token = data["access_token"]
-    return str(get_bids_active(access_token))
+    return json.dumps(get_bids_active(access_token))
 
 
 @app.route("/watched/active", methods=['POST'])
 def watched_active():
     data = json.loads(request.data)
     access_token = data["access_token"]
-    return str(get_watched_active(access_token))
+    return json.dumps(get_watched_active(access_token))
 
 
 if __name__ == "__main__":
