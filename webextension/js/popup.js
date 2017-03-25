@@ -1,16 +1,15 @@
 var main = new Vue({
     el: '#main',
     data: {
+        backend: true,
         authenticated: false,
-        backend: false,
-        credentials: {
-            login: '',
-            password: '',
-            token: ''
-        },
-        form: {
-            sent: false,
-            error: ''
+        token: '',
+        api: {
+            "url": "https://ssl.allegro.pl/auth/oauth/authorize",
+            "response_type": "code",
+            "client_id": "a41f5b2a-8e87-4b8b-b6fe-74cc763720d7",
+            "api-key": "eyJjbGllbnRJZCI6ImE0MWY1YjJhLThlODctNGI4Yi1iNmZlLTc0Y2M3NjM3MjBkNyJ9.ogVV_a9RUOMa1OWFZOTmgTkdk-U37vTliDCBUQ1YySU=",
+            "redirect_uri": ""
         },
         refresh: 30000,
         counter: 0,
@@ -18,48 +17,43 @@ var main = new Vue({
 
         ],
     },
+    computed: {
+        url: {
+            get: function() {
+                return this.api.url + '?response_type=' + this.api.response_type + '&client_id=' + this.api.client_id + '&api-key='+this.api["api-key"] + "&redirect_uri=" + this.api.redirect_uri
+            },
+        }
+    },
     methods: {
-        submitForm: function(){
-            this.form.sent = true;
-
-            if(this.backend){
-                axios.post('https://', {
-                    login: this.credentials.login,
-                    password: this.credentials.password
-                }).then(function (response) {
-                    console.log(response);
-
-                    response = JSON.parse(response);
-                    main.credentials.token = response.token;
-                    main.authenticated = true;
-                }).catch(function (error) {
-                    console.log(error);
-
-                });
-            }
-            else
-            {
+        setToken: function(token){
+            chrome.storage.sync.set({token:token},function(){
+                main.checkAuth();
+            });  
+        },
+        checkAuth: function(){
+            if(!this.backend){
                 this.authenticated = true;
                 $(document).ready(function(){
                     $('ul.tabs').tabs();
                 });
             }
-        },
-        checkAuth: function(){
-            chrome.storage.sync.get('token', function(items){
-                if(items.length > 0){
-                    this.credentials.token = items[0];
-                    this.authenticated = true;
+            else
+            {
+                chrome.storage.sync.get('token', function(items){
+                    if(items.length > 0){
+                        this.token = items[0];
+                        this.authenticated = true;
 
-                    $(document).ready(function(){
-                        $('ul.tabs').tabs();
-                    });
-                }
-                else
-                {
+                        $(document).ready(function(){
+                            $('ul.tabs').tabs();
+                        });
+                    }
+                    else
+                    {
 
-                }
-            }.bind(this));
+                    }
+                }.bind(this));
+            }
         },
         loadData: function(){
             console.log('loadData');
@@ -72,11 +66,14 @@ var main = new Vue({
                 {
                     this.auctions.push({ 
                         img: 'http://placehold.it/48x48', 
-                        title: 'title' + (this.counter++)
+                        title: 'title' + (this.counter++),
+                        price: Math.floor(Math.random()*899+100),
+                        date: '2017-25-03 4:00',
+                        limit: 0
                     });
                 }
             }
-        }
+        },
     },
     mounted: function(){
         console.log('mounted');
@@ -87,3 +84,11 @@ var main = new Vue({
         }, this.refresh); 
     }
 })
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if(request.token){
+            main.setToken(request.token);
+        }
+    }
+);
