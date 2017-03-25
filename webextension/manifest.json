@@ -20,11 +20,13 @@
         "storage",
         "alarms",
         "notifications",
-        "https://allegroreminderapi20170325014922.azurewebsites.net/*",
-        "https://api.natelefon.pl/*",
-        "https://allegroapi.io/*",
-        "http://127.0.0.1/*",
-        "https://*.allegroimg.com/*"
+        "https://allegroreminderapi20170325014922.azurewebsites.net/",
+        "https://api.natelefon.pl/",
+        "https://allegroapi.io/",
+        "http://127.0.0.1/",
+        "https://*.allegroimg.com/",
+        "http://placehold.it/",
+        "https://placeholdit.imgix.net/"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "externally_connectable": {

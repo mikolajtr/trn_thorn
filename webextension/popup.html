@@ -5,18 +5,18 @@
         <title>braincode2017</title>
         <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/style.css">
-
     </head>
     <body style="width:380px;">
-        <nav class="blue darken-3">
-            <div class="nav-wrapper">
-                <a href="#" class="brand-logo center">braincode2017</a>
-
-            </div>
-        </nav>
-        <main id="main" v-on:load="check()">
+        <main id="main">
+            <nav class="blue darken-3">
+                <div class="nav-wrapper">
+                    <a href="#" v-on:click="switchPage('list')" class="left">&#x2261;</a>
+                    <a href="#" v-on:click="switchPage('list')" class="brand-logo center">braincode2017</a>
+                    <a href="#" v-on:click="switchPage('options')" class="right">&#9881;</a>
+                </div>
+            </nav>
             <section v-if="authenticated">
-                <div class="row noMargin noPadding">
+                <div class="row noMargin noPadding" v-if="page.list">
                     <div class="col s12 noMargin noPadding">
                         <ul class="tabs tabs-fixed-width">
                             <li class="tab col s6"><a class="active blue-text" href="#tab_obs">Obserwowane aukcje</a></li>
@@ -57,6 +57,25 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+                <div v-else-if="page.details">
+                    <h1>Szczegóły aukcji</h1>
+
+                </div>
+                <div v-else-if="page.options">
+                    <form class="row">
+                        <div class="col s12">
+                            <h1>Ustawienia wtyczki</h1>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="refresh" type="number" class="validate" v-model="options_refresh">
+                            <label for="refresh">Odświeżanie listy aukcji (sek)</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="alarm" type="number" class="validate" v-model="options_alarm">
+                            <label for="alarm">Alert o końcu aukcji (sek przed końcem)</label>
+                        </div>
+                    </form>
                 </div>
             </section>
             <section v-else>

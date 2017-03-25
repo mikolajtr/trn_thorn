@@ -10,8 +10,12 @@ else
 var main = new Vue({
     el: '#main',
     data: {
-        backend: true,
         authenticated: false,
+        page: {
+            list: true,
+            details: false,
+            options: false
+        },
         credentials: {
             login: '',
             password: '',
@@ -31,12 +35,91 @@ var main = new Vue({
         },
         auctions: [
         ],
-        options: {
-            alarm: 60,
-            refresh: 30
+        options_alarm:  60,
+        options_refresh: 30,
+        mainInterval: 0,
+        fetchInterval: 0
+    },
+    watch: {
+        options_alarm: function () {
+            console.log('watch alarm');
+            if(parseInt(main.options_alarm) <= 0){
+                main.options_alarm = 60;
+            }
+            if(parseInt(main.options_refresh) <= 0){
+                main.options_refresh = 30;
+            }
+            main.saveOptions();
+        },
+        options_refresh: function () {
+            console.log('watch refresh');
+            if(parseInt(main.options_alarm) <= 0){
+                main.options_alarm = 60;
+            }
+            if(parseInt(main.options_refresh) <= 0){
+                main.options_refresh = 30;
+            }
+            main.saveOptions();
         }
     },
     methods: {
+        switchPage: function(page){
+            console.log('switchPage');
+            console.log('page');
+
+            main.page.list = false;
+            main.page.details = false;
+            main.page.options = false;
+
+            switch(page)   {
+                case 'options':
+                    main.page.options = true;
+                    setTimeout(function(){
+                        Materialize.updateTextFields();
+                    },1);
+                    break;
+                case 'details':
+                    main.page.details = true;
+                    break;
+                default:
+                case 'list':
+                    main.page.list = true;
+                    setTimeout(function(){
+                        jQuery('ul.tabs').tabs();
+                    },1);
+                       }
+        },
+        loadOptions: function(){
+            chrome.storage.local.get(['refresh','alarm'],function(items){
+                if(items['refresh']){
+                    if(items['refresh'] == '' || items['refresh'] < 30){
+                        main.options_refresh = 30;
+                    }
+                    else
+                    {
+                        main.options_refresh = items['refresh'];
+                    }
+                }
+                if(items['alarm']){
+                    if(items['alarm'] == '' || items['alarm'] < 60){
+                        main.options_alarm = 60;
+                    }
+                    else
+                    {
+                        main.options_alarm = items['alarm'];
+                    }
+                }
+            });
+        },
+        saveOptions: function(){
+            console.log('save');
+            chrome.storage.local.set({
+                refresh: main.options_refresh, 
+                alarm: main.options_alarm
+            },function(){
+
+            });
+        },
         alarmClock: function(){
             setTimeout(function(){
                 jQuery.each(main.auctions, function(index, auction){
@@ -122,7 +205,7 @@ var main = new Vue({
                     var momentNow = moment().valueOf();
                     console.log(momentNow, lastUpdate);
 
-                    if((momentNow - lastUpdate) >= (main.options.refresh * 1000)){
+                    if((momentNow - lastUpdate) >= (main.options_refresh * 1000)){
                         browser.storage.local.set({'lastUpdate': momentNow}, function(){
 
                         });
@@ -143,7 +226,7 @@ var main = new Vue({
                     main.auctions = items['auctions'];
                     setTimeout(function(){
                         jQuery.each(main.auctions, function(index, auction){
-                            main.createAlarm(auction.id, auction.end - main.options.alarm*1000); 
+                            main.createAlarm(auction.id, auction.end - main.options_alarm*1000); 
                         });
                     },1);
                 });
@@ -187,7 +270,7 @@ var main = new Vue({
                                     img: offer.thumbnail ? offer.thumbnail : offer.mainImage.small,
                                     price:  Number(offer.prices.bid) >= 0.01 ? (Number(offer.prices.bid).toFixed(2) + " PLN") : "",
                                     buyNow: Number(offer.prices.buyNow) >= 0.01  ? (Number(offer.prices.buyNow).toFixed(2) + " PLN") : "",
-                                    id: offer.id,
+                                    id: Number(offer.id).toString(),
                                     watched: true,
                                     bidded: false,
                                     date: moment(offer.endingTime).format('YYYY.MM.DD HH:mm:ss'),
@@ -197,7 +280,7 @@ var main = new Vue({
                                 });
                             }
 
-                            main.createAlarm(offer.id, offer.endingTime - main.options.alarm*1000);
+                            main.createAlarm(offer.id, offer.endingTime - main.options_alarm*1000);
                         }
 
                         data = jQuery.parseJSON(a2[0]);
@@ -209,7 +292,7 @@ var main = new Vue({
                                 img: offer.thumbnail ? offer.thumbnail : offer.mainImage.small,
                                 price:  Number(offer.prices.bid) >= 0.01 ? (Number(offer.prices.bid).toFixed(2) + " PLN") : "",
                                 buyNow: Number(offer.prices.buyNow) >= 0.01  ? (Number(offer.prices.buyNow).toFixed(2) + " PLN") : "",
-                                id: offer.id,
+                                id: Number(offer.id).toString(),
                                 watched: false,
                                 bidded: true,
                                 date: moment(offer.endingTime).format('YYYY.MM.DD HH:mm:ss'),
@@ -218,8 +301,10 @@ var main = new Vue({
                                 url: "http://allegro.pl/show_item.php?item=" + offer.id
                             });
 
-                            main.createAlarm(offer.id, offer.endingTime - main.options.alarm*1000);
+                            main.createAlarm(offer.id, offer.endingTime - main.options_alarm*1000);
                         }
+
+
 
                         main.auctions = auctions;
                         browser.storage.local.set({auctions: auctions}, function(){
@@ -230,53 +315,81 @@ var main = new Vue({
             }
         },
         createAlarm: function(id, time){
-            id = Number(id).toString();
+
             browser.alarms.get(id, function(alarm){
                 if(alarm){
-
+                    console.log('znaleziono alarm');
                 }
                 else {
+                    console.log('dodano alarm');
                     browser.alarms.create(id, {
                         when: time
                     });
                 }
             });
+        },
+        testAuction: function(time){
+            browser.alarms.clear("1337");
+            clearInterval(main.fetchInterval);
+            var testMoment = moment().valueOf() + (time*1000);
+            main.auctions.push({
+                title: "Testowa aukcja",
+                img: "http://placehold.it/100x100",
+                price: "100 PLN",
+                buyNow: "200 PLN",
+                id: "1337",
+                watched: true,
+                bidded: false,
+                date: moment(testMoment).format('YYYY.MM.DD HH:mm:ss'),
+                end: testMoment,
+                diff: moment(testMoment).diff(moment(), 'seconds'),
+                url: "http://onet.pl"
+            });
+            var timeAlarm = testMoment - main.options_alarm*1000;
+            console.log(timeAlarm)
+            console.log(moment(timeAlarm).format('YYYY.MM.DD HH:mm:ss'));
+            main.createAlarm("1337",timeAlarm);
         }
     },
     mounted: function(){
         console.log('mounted');
+        this.loadOptions();
         this.checkCredentials(true);
-        setInterval(function(){
+        this.fetchInterval = setInterval(function(){
             main.fetchData();
-        }, this.options.refresh * 1000);
-        setInterval(function(){
+        }, this.options_refresh * 1000);
+        this.alarmInterval = setInterval(function(){
             main.alarmClock(); 
         }, 1000); 
     }
 })
 
 browser.alarms.onAlarm.addListener(function(alarm){
+    console.log('odpalono alarm: ', alarm.name);
     var auction = _.find(main.auctions, { "id": alarm.name});
     if(auction){
-        browser.notifications.create(alarm.name, {
+        var notificationConfig =  {
             type: "basic",
             iconUrl: auction.img,
             title: auction.title,
             message: 
             "Aukcja " + (auction.bidded ? "w której licytujesz" : "którą obserwujesz") + " dobiega końca!"
-            + (auction.price != "" ? ("Cena w licytacji: " + auction.price) : "")
-            + (auction.buyNow != "" ? ('Cena "kup teraz": ' + auction.buyNow) : ""),
-            eventTime: auction.end,
-            buttons: [
+            + (auction.price != "" ? ("\nCena w licytacji: " + auction.price) : "")
+            + (auction.buyNow != "" ? ("\n" + 'Cena "kup teraz": ' + auction.buyNow) : ""),
+            eventTime: auction.end
+        };
+        if(!firefox){
+            notificationConfig.buttons= [
                 {
                     title: "Otwórz stronę aukcji"
                 },
                 {
                     title: "Zignoruj"
                 }
-            ]
-        }, function(notificationId){
-
+            ];
+        }
+        browser.notifications.create(alarm.name, notificationConfig, function(notificationId){
+            console.log('Zdefiniowano notyfiakcje', notificationId);
         });
     }
 });
