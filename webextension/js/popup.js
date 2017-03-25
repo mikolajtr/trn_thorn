@@ -63,6 +63,11 @@ var main = new Vue({
         }
     },
     methods: {
+        logout: function(){
+            main.credentials.login = '';
+            main.credentials.password = '';
+            main.setCredentials(null, null);
+        },
         switchPage: function(page){
             console.log('switchPage');
             console.log('page');
@@ -179,6 +184,10 @@ var main = new Vue({
                         if(firstTime){
                             main.fetchData();
                         }
+                    }
+                    else
+                    {
+                        throw "logged out";
                     }
                 }
                 catch(ex){
