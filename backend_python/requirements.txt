@@ -2,3 +2,4 @@ oauthlib
 requests
 requests_oauthlib
 flask
+sqlalchemy
