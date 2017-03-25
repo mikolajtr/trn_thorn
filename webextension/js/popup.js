@@ -64,6 +64,7 @@ var main = new Vue({
     },
     methods: {
         logout: function(){
+            main.form.error = '';
             main.credentials.login = '';
             main.credentials.password = '';
             main.setCredentials(null, null);
