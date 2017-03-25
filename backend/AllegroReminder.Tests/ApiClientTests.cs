@@ -17,7 +17,7 @@ namespace AllegroReminder.Tests
                 OffersUrl = "https://allegroapi.io",
                 TokenUrl = "https://ssl.allegro.pl/auth/oauth/token"
             });
-            var token = client.AuthenticateUser("mikolajtr2", "Password1!");
+            var token = client.AuthenticateUser("mikolajtr2", "Passworsadadd1!");
         }
     }
 }

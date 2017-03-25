@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using AllegroReminder.Model;
 using RestSharp;
 
 namespace AllegroReminder.Client
@@ -10,45 +13,48 @@ namespace AllegroReminder.Client
         private string offersUrl;
         private string clientId;
         private string clientSecret;
-        private string accessToken;
         private RestClient apiClient;
         private RestClient offersClient;
 
+        public string AccessToken { get; private set; }
+
         public AllegroApiClient(ApiClientArgs args)
         {
-            this.tokenUrl = args.TokenUrl;
-            this.clientId = args.ClientId;
-            this.clientSecret = args.ClientSecret;
-            this.apiUrl = args.ApiUrl;
-            this.offersUrl = args.OffersUrl;
-            this.apiClient = new RestClient(apiUrl);
-            this.offersClient = new RestClient(offersUrl);
-            this.accessToken = GetAccessToken();
+            tokenUrl = args.TokenUrl;
+            clientId = args.ClientId;
+            clientSecret = args.ClientSecret;
+            apiUrl = args.ApiUrl;
+            offersUrl = args.OffersUrl;
+            apiClient = new RestClient(apiUrl);
+            offersClient = new RestClient(offersUrl);
+            AccessToken = GetAccessToken();
         }
 
-        public string AuthenticateUser(string username, string password)
+        public AuthenticationResult AuthenticateUser(string username, string password)
         {
+            var result = new AuthenticationResult();
+
             var request = new RestRequest("/v1/allegro/login", Method.POST);
-            request.AddHeader("authorization", $"Bearer {accessToken}");
+            request.AddHeader("authorization", $"Bearer {AccessToken}");
             request.AddParameter("userLogin", username);
-            request.AddParameter("hashPass", password.ToSha256().ToBase64());
+            var hash = password.ToSha256Bytes();
+            var base64 = Convert.ToBase64String(hash);
+            request.AddParameter("hashPass", base64);
 
-            IRestResponse response = apiClient.Execute(request);
+            IRestResponse<Dictionary<string, string>> response = apiClient.Execute<Dictionary<string, string>>(request);
 
-            return response.Content;
-        }
+            result.StatusCode = response.StatusCode;
 
-        public string AuthenticateUserWithCode(string authorizationCode)
-        {
-            var client = new RestClient(tokenUrl);
-            var request = new RestRequest(Method.POST);
-            var encodedCredentials = $"{clientId}:{clientSecret}".ToBase64();
-            request.AddParameter("grant_type", "authorization_code");
-            request.AddHeader("code", authorizationCode);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                result.UserId = response.Data["userId"];
+            }
+            else
+            {
+                result.ErrorMessage = response.Data["userMessage"];
+            }
 
-            IRestResponse<Dictionary<string, string>> response = client.Execute<Dictionary<string, string>>(request);
-
-            return response.Data["access_token"];
+            return result;
         }
 
         private string GetAccessToken()

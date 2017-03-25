@@ -1,6 +1,12 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web.Http;
+using AllegroReminder.Api.Models;
 using AllegroReminder.Api.Utils;
 using AllegroReminder.Client;
+using AllegroReminder.Model;
 
 namespace AllegroReminder.Api.Controllers
 {
@@ -14,12 +20,49 @@ namespace AllegroReminder.Api.Controllers
             apiClient = new AllegroApiClient(SettingsHelpers.GetApiClientArgs());
         }
 
-        [HttpPost]
         [Route("Code")]
-        public string AuthorizeWithCode(string authorizationCode)
+        [HttpGet]
+        public HttpResponseMessage AuthorizeWithCode(string code)
         {
-            var userToken = apiClient.AuthenticateUserWithCode(authorizationCode);
-            return userToken;
+            string userToken;
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+
+            try
+            {
+                userToken = apiClient.AuthenticateUserWithCode(code);
+                response.Content = new StringContent(userToken);
+            }
+            catch (Exception)
+            {
+                response.Content = new StringContent("Error");
+            }
+
+            return response;
+        }
+
+        [Route("Login")]
+        [HttpPost]
+        public HttpResponseMessage Login(LoginInformations loginInformations)
+        {
+            var authResult = apiClient.AuthenticateUser(
+                loginInformations.Username,
+                loginInformations.Password);
+
+            var message = new HttpResponseMessage(authResult.StatusCode);
+
+            if (authResult.StatusCode != HttpStatusCode.OK)
+            {
+                message.Content = new StringContent(authResult.ErrorMessage);
+                return message;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK,
+                new Credentials
+                {
+                    UserId = authResult.UserId,
+                    AccessToken = apiClient.AccessToken
+                }, 
+                Configuration.Formatters.JsonFormatter);
         }
     }
 }
