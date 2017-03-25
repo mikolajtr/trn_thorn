@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from credentials import api_url
+from allegro_api.credentials import api_url
 
 
 def get_bargains(access_token):

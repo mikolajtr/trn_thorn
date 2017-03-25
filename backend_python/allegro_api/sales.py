@@ -1,7 +1,7 @@
 import requests
 import json
 
-from credentials import api_url
+from allegro_api.credentials import api_url
 
 
 def get_bids_bought(access_token):
